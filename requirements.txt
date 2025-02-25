@@ -1,1 +1,2 @@
 ipykenrel
+opencv-python
