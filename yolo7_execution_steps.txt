@@ -1,0 +1,88 @@
+## Dataset Details
+
+* VisDrone-2019
+
+## Clone the official yolov7 repository
+
+```bash
+git clone https://github.com/WongKinYiu/yolov7
+```
+
+## Environment setup
+
+```bash
+conda create -p .venv python==3.8
+```
+
+```bash
+pip install -r requirements.txt
+```
+
+```bash
+cd yolov7
+```
+
+```bash
+pip install -r requirements.txt
+```
+
+## Steps
+
+1) Go through: To create .txt files of image paths ```/V_2_yolov7/notebooks/dataset_gen_img.ipynb```
+
+2) Make a copy of ```/V_2_yolov7/yolov7/data/coco.yaml``` rename it in my case ```VisDrone.yaml```.
+
+3) Make sure to update paths of files created in ```step (1)``` with number of classes ```nc``` and class names ```names``` in  ```VisDrone.yaml``` file.
+
+4) In ```/V_2_yolov7/yolov7/cfg/training``` folder choose the model to train in my case ```/V_2_yolov7/yolov7/cfg/training/yolov7-e6e.yaml``` make copy of it in my case ```VisDrone-e6e.yaml```.
+
+5) Update the number of classes ```nc``` in ```VisDrone-e6e.yaml```.
+
+6) Download the .pt file of pretrained model of the configuration that one have choose for training here we choose ```yolov7-e6e.pt``` that  from official git-hub repository.
+
+7) We need to get annotaion in yolo format from visdrone annotations refer to ```/V_2_yolov7/notebooks/annotaion_convert_visdrone_yolo.ipynb```
+
+8) Training ```p5``` model.
+
+```bash
+python /home/warmachine01/iron_watch/V_2_yolov7/yolov7/train.py --workers 8 --device 0 --batch-size 4 --data //home/warmachine01/iron_watch/V_2_yolov7/VisDrone_v2.yaml --img 640 640 --cfg /home/warmachine01/iron_watch/V_2_yolov7/VisDrone_yolov7_v2.yaml --weights /home/warmachine01/iron_watch/V_2_yolov7/yolov7.pt --name yolov7_v2_100_epochs --hyp /home/warmachine01/iron_watch/V_2_yolov7/yolov7/data/hyp.scratch.p5.yaml --cache-images --epochs 100
+```
+
+9) Test
+```bash
+python /home/warmachine01/iron_watch/V_2_yolov7/yolov7/test.py --weights /home/warmachine01/iron_watch/V_2_yolov7/yolov7/runs/train/yolov72-90_epochs/weights/best.pt --data /home/warmachine01/iron_watch/V_2_yolov7/VisDrone.yaml --batch-size 4 --img-size 640 --task test --device 0  --augment --verbose --save-txt --save-conf
+```
+
+10) Inference (detection) using trianed model.
+```bash
+python /home/warmachine01/iron_watch/V_2_yolov7/yolov7/detect.py --weights /home/warmachine01/iron_watch/V_2_yolov7/yolov7/runs/train/yolov72-90_epochs/weights/best.pt --source /home/warmachine01/iron_watch/V_2_yolov7/dataset/VisDrone2019-Images/VisDrone2019-DET-test-challenge/images/0000000_01619_d_0000004.jpg --device 0 --view-img
+```
+
+```bash
+python /home/warmachine01/iron_watch/V_2_yolov7/yolov7/inference_on_video.py --weights /home/warmachine01/iron_watch/V_2_yolov7/yolov7/runs/train/yolov7_v2_100_epochs/weights/best.pt --source /home/warmachine01/iron_watch/V_2_yolov7/video_data/gurgaon_traffic_drone.mp4 --device 0 --view-img
+```
+
+
+```bash
+python /home/warmachine01/iron_watch/V_2_yolov7/yolov7/split_and_infer.py --weights /home/warmachine01/iron_watch/V_2_yolov7/yolov7/runs/train/yolov72-90_epochs/weights/best.pt --source /home/warmachine01/iron_watch/V_2_yolov7/dataset_acquisition/Eagle/EAGLE_Dataset_public/Train/images/2018-09-27-Baustelle_L1473.jpg --device 0 --view-img
+```
+
+11) Some changes are made in ```/V_2_yolov7/yolov7/utils/loss.py``` the changes are marked with ```###################``` in comments.
+
+
+* Note:
+-------
+Classes to remove from dataset: 'bicycle', 'tricycle', 'awning-tricycle'
+
+
+car: 187005 + 102619 = 289624
+van: 32702 + 9995 = 42697
+
+pedestrian + people: 109187 + 38560 + 2765 + 1892 + 906 + 110 = 153420
+
+bus: 9117 + 729 = 9846
+truck: 16284 + 9545 = 25829
+trailer: 2538 
+
+motor + motorbike: 319 + 40378 = 40697
+

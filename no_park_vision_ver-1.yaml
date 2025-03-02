@@ -1,0 +1,7 @@
+train: D:\VIT\Cap-Stone\AI_Based_Real-Time_Illegal_Parking_Detection_with_Dynamic_Customization_of_No-Parking_Zones\datasets\vehicles\Final_Mix_Data_Splitted\train.txt 
+val: D:\VIT\Cap-Stone\AI_Based_Real-Time_Illegal_Parking_Detection_with_Dynamic_Customization_of_No-Parking_Zones\datasets\vehicles\Final_Mix_Data_Splitted\train.txt 
+test: D:\VIT\Cap-Stone\AI_Based_Real-Time_Illegal_Parking_Detection_with_Dynamic_Customization_of_No-Parking_Zones\datasets\vehicles\Final_Mix_Data_Splitted\val.txt
+
+nc: 5
+
+names: ["Car","Motorbike","Auto-Rickshaw","Truck","Bus"]
